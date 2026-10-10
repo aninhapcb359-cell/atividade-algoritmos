@@ -1,1 +1,36 @@
+import sys
 
+
+def ler_inteiros():
+    """Lê inteiros da entrada padrão até encontrar '*' (ou fim da entrada)."""
+    valores = []
+    for linha in sys.stdin:
+        for token in linha.split():
+            if token == "*":
+                return valores
+            valores.append(int(token))
+    return valores
+
+
+def mediana():
+    v = ler_inteiros()
+    n = len(v)
+    if n == 0:
+        return
+
+    # Etapa 1: ordenação.
+    v.sort()
+
+    # Etapa 2: acesso direto. Como os valores são distintos, o elemento na
+    # posição (n-1)//2 do vetor ordenado tem exatamente (n-1)//2 elementos
+    # estritamente menores que ele: é a mediana.
+    print(v[(n - 1) // 2])
+
+
+# Complexidade em função de n (tamanho do vetor):
+#  - Ordenação: O(n log n)  <- etapa dominante.
+#  - Acesso à posição (n-1)//2: O(1).
+# Total: O(n log n).
+
+if __name__ == "__main__":
+    mediana()
