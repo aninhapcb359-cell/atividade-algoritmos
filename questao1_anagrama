@@ -1,1 +1,51 @@
+import sys
 
+
+def ler_palavras():
+    """Lê palavras da entrada padrão até encontrar '*' (ou fim da entrada)."""
+    palavras = []
+    for linha in sys.stdin:
+        for token in linha.split():
+            if token == "*":
+                return palavras
+            palavras.append(token)
+    return palavras
+
+
+def anagramas():
+    palavras = ler_palavras()
+
+    # Chave canônica: letras da palavra ordenadas.
+    # Duas palavras são anagramas se, e somente se, têm a mesma chave.
+    pares = [("".join(sorted(p)), p) for p in palavras]
+
+    # Ordenação central: pares ordenados por (chave, palavra).
+    # Palavras da mesma classe ficam contíguas, e a primeira de cada
+    # bloco é a menor palavra (ordem lexicográfica) da classe.
+    pares.sort()
+
+    representantes = []
+    anterior = None
+    for chave, palavra in pares:
+        if chave != anterior:
+            representantes.append(palavra)
+            anterior = chave
+
+    # Os representantes devem sair em ordem lexicográfica.
+    representantes.sort()
+
+    for p in representantes:
+        print(p)
+
+
+# Complexidade: N = número de palavras, L = tamanho máximo de uma palavra,
+# M = total de caracteres (M <= N*L).
+#  - Construir as chaves: soma de O(l log l) por palavra, ou O(M log L).
+#  - Ordenar os N pares: O(N log N) comparações, cada uma custando até O(L),
+#    ou seja, O(L * N log N). Esta etapa domina o custo total.
+#  - Varredura para extrair representantes: O(M).
+#  - Ordenar os representantes: O(N log N) comparações de custo O(L).
+# Total: O(M log L + L * N log N).
+
+if __name__ == "__main__":
+    anagramas()
