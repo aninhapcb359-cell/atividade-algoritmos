@@ -1,1 +1,40 @@
+import sys
 
+
+def ler_inteiros():
+    """Lê inteiros da entrada padrão até encontrar '*' (ou fim da entrada)."""
+    valores = []
+    for linha in sys.stdin:
+        for token in linha.split():
+            if token == "*":
+                return valores
+            valores.append(int(token))
+    return valores
+
+
+def distintos():
+    v = ler_inteiros()
+
+    # Etapa 1: ordenação.
+    v.sort()
+
+    # Etapa 2: varredura linear contando as mudanças de valor.
+    # Após ordenar, valores iguais ficam adjacentes.
+    if not v:
+        print(0)
+        return
+    contagem = 1
+    for i in range(1, len(v)):
+        if v[i] != v[i - 1]:
+            contagem += 1
+
+    print(contagem)
+
+
+# Complexidade em função de n (tamanho do vetor):
+#  - Ordenação: O(n log n)  <- etapa dominante.
+#  - Varredura depois de ordenado: O(n).
+# Total: O(n log n).
+
+if __name__ == "__main__":
+    distintos()
